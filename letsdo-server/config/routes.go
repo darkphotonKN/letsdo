@@ -25,6 +25,7 @@ func SetupRoutes(db *sqlx.DB, logger *slog.Logger) *gin.Engine {
 	repo := todo.NewRepository(db)
 	service := todo.NewService(repo, logger)
 	handler := todo.NewHandler(service, logger)
+	slog.Info("", handler) // WARN: KIKI REMOVE THIS LATER
 
 	// Health check
 	router.GET("/health", func(c *gin.Context) {
@@ -33,12 +34,8 @@ func SetupRoutes(db *sqlx.DB, logger *slog.Logger) *gin.Engine {
 
 	// API routes
 	api := router.Group("/api")
-	{
-		todos := api.Group("/todos")
-		{
-			todos.POST("", handler.CreateTodo)
-		}
-	}
+	todos := api.Group("/")
+	slog.Info("", todos) // WARN: KIKI REMOVE THIS LATER
 
 	return router
 }
